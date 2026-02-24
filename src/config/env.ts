@@ -12,6 +12,7 @@ const envSchema = z.object({
   OPENROUTER_BASE_URL: z.string().default("https://openrouter.ai/api/v1"),
   PROXY_API_KEY:      z.string().min(1),
   LOG_LEVEL:          z.string().default("info"),
+  NODE_ENV:           z.enum(["development", "production"]).default("development"),
 })
 
 export const env = envSchema.parse(process.env) 

@@ -11,9 +11,10 @@ app.use("/v1/*", auth)
 app.route("/", proxy)
 app.route("/", status)
 
-printBanner()
-
-export default {
+Bun.serve({
   port: env.PORT,
   fetch: app.fetch,
-}
+  development: env.NODE_ENV !== "production",
+})
+
+printBanner()
