@@ -29,9 +29,18 @@ export function toCompletion(result: ChatResult): ChatCompletion {
 
 export function toChunk(chunk: ChatCompletionChunk, id: string, modelId: string): ChatCompletionChunk {
   return {
-    ...chunk,
     id,
+    object: chunk.object,
+    created: chunk.created,
     model: modelId,
+    choices: chunk.choices.map(({ index, delta, finish_reason }) => ({
+      index,
+      delta: {
+        ...(delta.role && { role: delta.role }),
+        ...(delta.content != null && { content: delta.content }),
+      },
+      finish_reason,
+    })),
   }
 }
 
