@@ -3,6 +3,12 @@ import { HttpError } from "../types/errors.ts"
 const DEFAULT_TIMEOUT = 30_000
 const STREAM_TIMEOUT = 120_000
 
+const DEFAULT_HEADERS: Record<string, string> = {
+  "User-Agent": "ai-proxy/1.0",
+  "Accept": "application/json",
+  "Accept-Language": "en-US,en;q=0.9",
+}
+
 interface HttpOptions {
   url: string
   headers: Record<string, string>
@@ -20,7 +26,7 @@ export async function post<T>(options: HttpOptions): Promise<T> {
     const response = await fetch(options.url, {
       method: "POST",
       signal: controller.signal,
-      headers: options.headers,
+      headers: { ...DEFAULT_HEADERS, ...options.headers },
       body: JSON.stringify(options.body),
     })
 
@@ -57,7 +63,7 @@ export async function postStream(options: HttpOptions): Promise<StreamResponse> 
     const response = await fetch(options.url, {
       method: "POST",
       signal: controller.signal,
-      headers: options.headers,
+      headers: { ...DEFAULT_HEADERS, ...options.headers },
       body: JSON.stringify(options.body),
     })
 
